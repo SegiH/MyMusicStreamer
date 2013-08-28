@@ -1,0 +1,67 @@
+<?php
+     // when loading index.php make sure generatePassword.php doesnt exist
+     // allow internal ip without login
+
+     // Change this to your own Mysql Login info
+     $database_username="mmsuser";
+     $database_password="mmsuser!@#!@#";
+     $database_host="localhost";
+     $database_name="mms";
+     $table_name="MMS_Playlists";
+     $user_auth_table="MMS_Users";
+
+     if ( !isset($mms_connect) ) {
+     
+          // Try to connect
+          $mms_connect = new mysqli($database_host,$database_username,$database_password,$database_name); 
+                         
+          // Make sure DB connect worked
+          if ( $mms_connect == NULL ) {
+               errorOccured("Connection to DB failed");
+          }
+     }
+     /*
+     if ( isset($_POST["username"]) ) {
+          // Try to authenticate
+          $sql='select * from ' . $user_auth_table . ' where Username="' . $mms_connect->real_escape_string($_POST["username"]) . '" and password="' . hash('sha512',$_POST["password"]) . '"';
+          $result = $mms_connect->query($sql);
+     
+          if ( !$result ) {
+               die("Unable to login into the database");
+          }
+     
+          if ( $result->num_rows == 0 ) {
+               die("Authentication Failed with the query $sql");
+          } else {
+               session_start();
+               $_SESSION['CURR_USER']=$mms_connect->real_escape_string($_POST["username"]);
+               
+               header('Location:' . $_SESSION['Referrer']);
+          }
+     }
+
+     if (!isset($_SESSION['CURR_USER']) && $nologin != true ) {
+          echo "<html>" . PHP_EOL;
+          echo "<body>" . PHP_EOL;
+          echo "<div id='loginDiv'>" . PHP_EOL;
+          echo "<form action='login.php' method='post'>" . PHP_EOL;
+          echo "<table>" . PHP_EOL;
+          echo "<tr><td>" . PHP_EOL;
+          echo "Username: <input type='text' name='username'><BR />" . PHP_EOL;
+          echo "</td></tr>" . PHP_EOL;
+          echo "<tr><td>" . PHP_EOL;
+          echo "Password: <input type='password' name='password'><BR />" . PHP_EOL;
+          echo "<input type='submit' value='Login'>" . PHP_EOL;
+          echo "</td></tr></table>" . PHP_EOL;
+          echo "</form>" . PHP_EOL;
+          echo "</div>" . PHP_EOL;
+          echo "</body>" . PHP_EOL;
+          echo "</html>" . PHP_EOL;
+     }
+*/
+     // I include this here because all my php scripts include login.php anyway
+     function errorOccured($str) {
+          $json['error'] = $str;
+          die(json_encode($json));
+     }
+?>
