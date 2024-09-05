@@ -27,7 +27,7 @@
           <link href='MyMusicStreamer.css' rel='stylesheet' type='text/css' />
      
           <!-- Load jQuery -->
-          <script src="js/jquery-1.8.0.min.js"></script>
+          <script src="js/jquery-3.7.1.min.js"></script>
     
           <!-- Load jQueryFileTree -->
           <script src='js/jqueryFileTree/jqueryFileTree.js' type='text/javascript'></script>
@@ -182,10 +182,6 @@
                </div>        
                <BR><BR>
           </div>
-          <BR><BR>
-
-          <A HREF='http://apps.hovav.org/mymusicstreamer' id='homepage' target='_blank'>MyMusicStreamer web site</A>
-          
           <BR><BR>
      </body>
 </html>
