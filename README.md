@@ -5,4 +5,3 @@ This application was built using HTML/JavaScript/Jquery and PHP to provide a Fla
 It works with almost every Desktop and mobile browser.
 
 This code is available for free under the GPL.
-

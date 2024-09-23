@@ -1,24 +1,5 @@
-<?php
-/*
-     session_start();
-     
-     $local_ip="10.0.1.28";
-
-     if ( !isset($_SESSION['CURR_USER']) ) {
-          if ( $local_ip != "" && $local_ip != $_SERVER[HTTP_HOST] ) {
-          
-               // Set referrer so login.php knows which script called it
-               $_SESSION['Referrer']="index.php";
-               //header('Location:login.php');
-          }
-     }
-*/
-?>
-
 <!DOCTYPE html>
-
-<!-- Use <HTML debug='true'> when debugging ith Firebug Lite -->
-<HTML>
+<html>
      <head>
           <meta charset="utf-8" />
           <title>MyMusic Streamer</title>
@@ -49,12 +30,12 @@
      
           <script>
                $(function() {
-                     $( "#tabs" ).tabs();
+                     $("#tabs").tabs();
                });
           </script>
      </head>
 
-     <BODY>
+     <body>
           <div id='jquery_jplayer_1' class='jp-jplayer'></div>
 
           <div id='jp_container_1' class='jp-audio'>
@@ -88,29 +69,31 @@
                     <div id='keyboardShortcutsHelp'></div>
                </div> <!-- End of <div class='jp-type-single'> -->
           </div> <!-- End of <div id='jp_container_1' class='jp-audio'> -->
- 
+
           <div id="tabs">
                <ul>
                     <li><a href="#tabs-1">Music Browser</a></li>
                     <li><a href="#tabs-2">Playlists</a></li>
                     <li><a href="#tabs-3">Recently Added</a></li>
-					<li><a href="#tabs-4">Queue</a></li>
+				<li><a href="#tabs-4">Queue</a></li>
                </ul>
-          <div id="tabs-1">
-     
-               <!-- Load jQueryFileTree -->
-               <div id="myMusicStreamer_fileTree" class="fileTreeCSS"></div>
-               <div id='currentPath'></div><BR />
-               <button class='ui-state-default ui-corner-all' name='goBackTopFolder' type='button' id='goBackTopFolder'>Go back to the top folder</button>
-               <button class='ui-state-default ui-corner-all' name='currFolder' type='button' id='currFolder'>Return to folder of currently playing song</button>
-               <div id='jumpTo'>
-                    Jump To: <input id='jump-to' type='text'/><BR>
+
+               <!-- File Browser Tab -->
+               <div id="tabs-1">
+                    <!-- Load jQueryFileTree -->
+                    <div id="myMusicStreamer_fileTree" class="fileTreeCSS"></div>
+                    <div id='currentPath'></div><BR />
+                    <button class='ui-state-default ui-corner-all' name='goBackTopFolder' type='button' id='goBackTopFolder'>Go back to the top folder</button>
+                    <button class='ui-state-default ui-corner-all' name='currFolder' type='button' id='currFolder'>Return to folder of currently playing song</button>
+                    <div id='jumpTo'>
+                         Jump To: <input id='jump-to' type='text'/><BR>
+                    </div>
                </div>
-          </div>
-          
-          <div id="tabs-2">         
-               <ul class='pureCssMenu pureCssMenum'>
-                    <li class='pureCssMenui'><a id='playlistMenu' class='pureCssMenui'><span>Playlist Menu</span></a>
+
+               <!-- Playlists Tab -->
+               <div id="tabs-2">
+                    <ul class='pureCssMenu pureCssMenum'>
+                         <li class='pureCssMenui'><a id='playlistMenu' class='pureCssMenui'><span>Playlist Menu</span></a>
                               <ul class='pureCssMenum'>
                                    <li class='pureCssMenui'><a id='loadPlaylist' class='pureCssMenui'>Load a playlist</a></li>
                                    <li class='pureCssMenui'><a id='deletePlaylist' class='pureCssMenui' href='javascript:;'>Delete a playlist</a></li>
@@ -139,49 +122,69 @@
                          </div>
                     </div>
                </div>
-                
-               <div id="tabs-3"> 
 
-                    Added in the last <select id="RecentDuration">
+               <!-- Recently Added Tab -->
+               <div id="tabs-3">
+                    Added in the last
+                    <select id="RecentDuration">
                          <option value="90">90</option>                         
-						 <option value="60">60</option>
+				     <option value="60">60</option>
                          <option value="30">30</option>
-						 <option value="29">29</option>
-						 <option value="28">28</option>
-						 <option value="27">27</option>
-						 <option value="26">26</option>
-						 <option value="25">25</option>
-						 <option value="24">24</option>
-						 <option value="23">23</option>
-						 <option value="22">22</option>
-						 <option value="21">21</option>
-						 <option value="20">20</option>
-						 <option value="19">19</option>
-						 <option value="18">18</option>
-						 <option value="17">17</option>
+                         <option value="29">29</option>
+                         <option value="28">28</option>
+                         <option value="27">27</option>
+                         <option value="26">26</option>
+                         <option value="25">25</option>
+                         <option value="24">24</option>
+                         <option value="23">23</option>
+                         <option value="22">22</option>
+                         <option value="21">21</option>
+                         <option value="20">20</option>
+                         <option value="19">19</option>
+                         <option value="18">18</option>
+                         <option value="17">17</option>
                          <option value="16">16</option>
-						 <option value="15">15</option>
-						 <option value="14">14</option>
-						 <option value="13">13</option>
-						 <option value="12">12</option>
-						 <option value="11">11</option>
-						 <option value="10">10</option>
-						 <option value="9">9</option>
-						 <option value="8">8</option>
+                         <option value="15">15</option>
+                         <option value="14">14</option>
+                         <option value="13">13</option>
+                         <option value="12">12</option>
+                         <option value="11">11</option>
+                         <option value="10">10</option>
+                         <option value="9">9</option>
+                         <option value="8">8</option>
                          <option selected value="7">7</option>
-						 <option value="6">6</option>
-						 <option value="5">5</option>
-						 <option value="4">4</option>
-						 <option value="3">3</option>
-						 <option value="2">2</option>
+                         <option value="6">6</option>
+                         <option value="5">5</option>
+                         <option value="4">4</option>
+                         <option value="3">3</option>
+                         <option value="2">2</option>
                          <option value="1">1</option>
                     </select> days<BR><BR>
                </div>
-			   <div id="tabs-4"> 
-			   </div>
-               </div>        
-               <BR><BR>
+
+               <div id="tabs-4"></div>
           </div>
-          <BR><BR>
+
+          <!--<BR><BR>
+
+          </div>
+          <BR><BR>-->
      </body>
 </html>
+
+<?php
+/*
+// This code was at the top of the script for a potential login but its not being used
+     session_start();
+
+     $local_ip="10.0.1.28";
+
+     if ( !isset($_SESSION['CURR_USER']) ) {
+          if ( $local_ip != "" && $local_ip != $_SERVER[HTTP_HOST] ) {
+               // Set referrer so login.php knows which script called it
+               $_SESSION['Referrer']="index.php";
+               //header('Location:login.php');
+          }
+     }
+*/
+?>

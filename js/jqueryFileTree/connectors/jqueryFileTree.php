@@ -16,6 +16,8 @@
 // Output a list of files for jQuery File Tree
 //
 
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
+
 if ( PHP_OS == "WINNT" ) {
      $delimiter="\\";
 } else {
@@ -30,52 +32,77 @@ $music_path=substr($music_path,0,strrpos($music_path,$delimiter)) . $delimiter .
 	
 $root="";
 
-// decode all of the dirs provided
-$_POST['dir'] = urldecode($_POST['dir']);
+if (isset($_POST['dir'])) {
+	$dir = $_POST['dir'];
+} else if (isset($_GET['dir'])) {
+	$dir = $_GET['dir'];
+} else {
+	$html = $html . "<ul id=\"jqueryFileTree\" class=\"jqueryFileTree\" style=\"display: none;\"></ul";
 
-if( file_exists($root . $_POST['dir']) ) {
+	die($html);	
+}
+
+// decode all of the dirs provided. Since I moved the php script to a /php subdirectory, we need to remove /php from the path
+$dir = urldecode($dir);
+
+
+$html = "";
+
+if( file_exists($root . $dir) ) {
+	 $files = scandir($root . $dir);
 	
-	 $files = scandir($root . $_POST['dir']);
-	
-	 natcasesort($files);
-	
+	 // Sort directory so .. is always first. FIxes issue with directory that begins with ' (single apostrophe)
+	 usort($files, function($a, $b) {
+		  if ($a === '..') {
+			   return -1; // Move ".." to the front
+		  }
+
+		  if ($b === '..') {
+			   return 1; // Keep all other items behind ".."
+		  }
+
+		  return 0; // Keep the order for other elements
+ 	 });
+
 	 // When there are only 2 files (. and ..) and we are not in the root directory, add ..
-	 if ( count($files) == 2 && $root . $_POST['dir'] <> $music_path ) {
-		  echo "<ul id=\"jqueryFileTree\" class=\"jqueryFileTree\" style=\"display: none;\">";
-		  echo "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $files[1]) . $delimiter . "\">" . htmlentities($files[1]) . "</a></li>";
-		  echo "</ul>";
+	 if (count($files) == 2 && $root . $dir <> $music_path ) {
+		  $html = $html . "<ul id=\"jqueryFileTree\" class=\"jqueryFileTree\" style=\"display: none;\">";
+		  $html = $html . "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($dir . "..") . $delimiter . "\">" . htmlentities("..") . "</a></li>";
+		  $html = $html . "</ul>";
+
+		  echo $html;
 	 } elseif( count($files) > 2 ) {
-		  echo "<ul  id=\"jqueryFileTree\" class=\"jqueryFileTree\" style=\"display: none;\">";
+		  $html = $html . "<ul  id=\"jqueryFileTree\" class=\"jqueryFileTree\" style=\"display: none;\">";
 
           // Use Boolean to determine if the current folder has any files
           $hasFiles=FALSE;
 
           foreach ( $files as $file2 ) {
-               if ( !is_dir($root . $_POST['dir'] . $file2) && in_array(strtolower(substr($file2,-3)),array( 'mp3','m4a','aac'))) $hasFiles=TRUE;
+               if ( !is_dir($root . $dir . $file2) && in_array(strtolower(substr($file2,-3)),array( 'mp3','m4a','aac'))) $hasFiles=TRUE;
           }
-		  
-		  // All dirs
+
 		  foreach( $files as $file ) {
-			   if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && is_dir($root . $_POST['dir'] . $file) ) {		
-			        if ( ($root . $_POST['dir'] . $file) <> $music_path . "..") { // If we are in the root dir ($music_path) do not add .. directory
-					     // When $hasfile == true, add the add all tracks link                         
-						 echo "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($_POST['dir'] . $file) . $delimiter . "\">" . htmlentities($file) . ($file == ".." && $hasFiles == true ? "<div class='actions'><a class='addAllTracks' rel='" . urlencode($_POST['dir']) . "'>add all" : "" ) . "</a></li>";
+			   if( file_exists($root . $dir . $file) && $file != '.' && is_dir($root . $dir . $file) ) {
+			        if ( ($root . $dir . $file) <> $music_path . "..") { // If we are in the root dir ($music_path) do not add .. directory
+						$html = $html . "<li class=\"directory collapsed\"><a href=\"#\" rel=\"" . htmlentities($dir . $file) . $delimiter . "\">" . htmlentities($file) . ($file == ".." && $hasFiles == true ? "<div class='actions'><a class='addAllTracks' rel='" . urlencode($dir) . "'>add all" : "" ) . "</a></li>";
 				    }
 			   }
 		  }
 		
 		  // All files
 		  foreach( $files as $file ) {
-		       if( file_exists($root . $_POST['dir'] . $file) && $file != '.' && $file != '..' && !is_dir($root . $_POST['dir'] . $file) && in_array(strtolower(substr($file,-3)),array( 'mp3','m4a','aac'))) {
+		       if( file_exists($root . $dir . $file) && $file != '.' && $file != '..' && !is_dir($root . $dir . $file) && in_array(strtolower(substr($file,-3)),array( 'mp3','m4a','aac'))) {
 			        $ext = preg_replace('/^.*\./', '', $file);
 				
 				    if ( $_POST["Type"] <> "Dir") {
-					     echo "<li class='track'><a href=\"#\" rel=\"" . $_POST['dir'] . $file . "\">" . $file . "<div class='actions'><a class='add' rel='" . $_POST['dir'] . $file . "'>add</a></div></li>";
+						$html = $html . "<li class='track'><a href=\"#\" rel=\"" . $dir . $file . "\">" . $file . "<div class='actions'><a class='add' rel='" . $dir . $file . "'>add</a></div></li>";
 				    }
 			   }
 		  }
 		
-		  echo "</ul>";	
+		  $html = $html . "</ul>";
+
+		  echo $html;
 	 }
 }
 

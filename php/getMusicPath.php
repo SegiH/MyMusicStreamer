@@ -22,7 +22,7 @@
      
      // Full path to music folder on the server
      $music_path=substr(__FILE__,0,strrpos(__FILE__,$delimiter)) . $delimiter . "Music" . $delimiter;
-
+     $music_path=str_replace("/php/", "/", $music_path);
      if (substr($music_path,-1) <> $delimiter) {
           $music_path = $music_path . $delimiter;
      }
